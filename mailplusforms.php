@@ -9,21 +9,21 @@ Author URI: https://www.spotler.com
 License: Modified BSD license
 */
 
-/*  
+/*
 
 Copyright (c) Spotler (email : info@spotler.com)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
+	* Redistributions of source code must retain the above copyright
+	  notice, this list of conditions and the following disclaimer.
+	* Redistributions in binary form must reproduce the above copyright
+	  notice, this list of conditions and the following disclaimer in the
+	  documentation and/or other materials provided with the distribution.
+	* Neither the name of the <organization> nor the
+	  names of its contributors may be used to endorse or promote products
+	  derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -52,25 +52,24 @@ add_shortcode('mailplusform', 'mpforms_shortcode');
 
 add_action('wp_ajax_mpforms_get_forms', 'mpforms_get_forms');
 
-function mpforms_get_forms()
-{
-    if (!current_user_can('edit_posts') && !current_user_can('edit_pages')){
-        die('You must be logged in to access this script.');
-    }
+function mpforms_get_forms() {
+	if (!current_user_can('edit_posts') && !current_user_can('edit_pages')){
+		die('You must be logged in to access this script.');
+	}
 
-    header('Content-type: application/json');
-    $api = new mailplus_forms_api();
-    $forms = $api->get_forms();
+	header('Content-type: application/json');
+	$api = new mailplus_forms_api();
+	$forms = $api->get_forms();
 
-    $result = array();
+	$result = array();
 
-    foreach ($forms as $form) {
-        $row = array('id' => (int) $form->id, 'name' => (string) $form->name);
-        $result[] = $row;
-    }
+	foreach ($forms as $form) {
+		$row = array('id' => (int) $form->id, 'name' => (string) $form->name);
+		$result[] = $row;
+	}
 
-    echo json_encode($result);
-    wp_die();
+	echo json_encode($result);
+	wp_die();
 }
 
 function mpforms_plugin_menu() {
@@ -86,13 +85,13 @@ function  mpforms_options_page() {
 		<?php settings_fields('mpforms_plugin_options'); ?>
 		<?php do_settings_sections('mpforms_plugin_sections'); ?>
 		<br><br>
-		<input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />	
+		<input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 		<br><br>
-		                <div>
+						<div>
 <strong>About MailPlus</strong><br>
 <a href="http://www.mailplus.nl"  target="_blank">MailPlus</a> is an online marketing platform which contains a user-friendly form editor with a lot of features. For example, matrix questions, conditional questions, skip logic/branching, multi-paging, extensive features for validating answers from respondents, great e-mail confirmation possibilities and much more.
 
-                </div>
+				</div>
 
 	</form>
 	</div>
@@ -146,7 +145,7 @@ function mpforms_apiurl_setting_string() {
 	}
 
 	echo "<input id='mpforms_api_url' name='mpforms_plugin_options[mpforms_api_url]' size='50' type='text' value='$url' />";
-} 
+}
 
 function mpforms_key_settings_string() {
 	$options = get_option('mpforms_plugin_options');
@@ -155,24 +154,24 @@ function mpforms_key_settings_string() {
 }
 
 function mpforms_secret_settings_string() {
-        $options = get_option('mpforms_plugin_options');
+		$options = get_option('mpforms_plugin_options');
 	if (!isset($options['mpforms_consumer_secret'])) { $options['mpforms_consumer_secret'] = ''; };
 
-        echo "<input id='mpforms_consumer_secret' name='mpforms_plugin_options[mpforms_consumer_secret]' size='32' type='text' value='{$options['mpforms_consumer_secret']}'";
+		echo "<input id='mpforms_consumer_secret' name='mpforms_plugin_options[mpforms_consumer_secret]' size='32' type='text' value='{$options['mpforms_consumer_secret']}'";
 }
 
 function mpforms_htmlxhtml_settings() {
-        $options = get_option('mpforms_plugin_options');
-        
+	$options = get_option('mpforms_plugin_options');
+
 	if (isset($options['mpforms_htmlxhtml'])) {
 		$val = $options['mpforms_htmlxhtml'];
 	} else {
 		$val = 'xhtml';
 	}
 ?>
-        <input name='mpforms_plugin_options[mpforms_htmlxhtml]' type='radio' id='mpforms_xhtml' value='xhtml' <?php if ($val === 'xhtml') echo "checked='checked'"; ?> ><label for='mpforms_xhtml'>xhtml</label><br />
+	<input name='mpforms_plugin_options[mpforms_htmlxhtml]' type='radio' id='mpforms_xhtml' value='xhtml' <?php if ($val === 'xhtml') echo "checked='checked'"; ?> ><label for='mpforms_xhtml'>xhtml</label><br />
 	<input name='mpforms_plugin_options[mpforms_htmlxhtml]' type='radio' id='mpforms_html' value='html' <?php if ($val === 'html') echo "checked='checked'"; ?> ><label for='mpforms_html'>html</label>
-        
+
 <?php
 }
 
@@ -180,16 +179,14 @@ function mpforms_tablesdivs_settings() {
 	$options = get_option('mpforms_plugin_options');
 
 	if (isset($options['mpforms_tablesdivs'])) {
-        	$val = $options['mpforms_tablesdivs'];
+		$val = $options['mpforms_tablesdivs'];
 	} else {
 		$val = 'tables';
-        }       
+	}
 ?>
-        <input name='mpforms_plugin_options[mpforms_tablesdivs]' type='radio' id='mpforms_tables' value='tables' <?php if ($val == 'tables') echo "checked='checked'"; ?> ><label for='mpforms_html'>tables</label><br>
-        <input name='mpforms_plugin_options[mpforms_tablesdivs]' type='radio' id='mpforms_divs' value='divs' <?php if ($val == 'divs') echo "checked='checked'"; ?> ><label for='mpforms_xhtml'>divs</label>
-        
+	<input name='mpforms_plugin_options[mpforms_tablesdivs]' type='radio' id='mpforms_tables' value='tables' <?php if ($val == 'tables') echo "checked='checked'"; ?> ><label for='mpforms_html'>tables</label><br>
+	<input name='mpforms_plugin_options[mpforms_tablesdivs]' type='radio' id='mpforms_divs' value='divs' <?php if ($val == 'divs') echo "checked='checked'"; ?> ><label for='mpforms_xhtml'>divs</label>
 <?php
-
 }
 
 
@@ -199,7 +196,7 @@ function mp_forms_plugin_options_validate($input) {
 	$options['mpforms_consumer_key'] = trim($input['mpforms_consumer_key']);
 	$options['mpforms_consumer_secret'] = trim($input['mpforms_consumer_secret']);
 	$options['mpforms_htmlxhtml'] = $input['mpforms_htmlxhtml'];
-	$options['mpforms_tablesdivs'] = $input['mpforms_tablesdivs'];	
+	$options['mpforms_tablesdivs'] = $input['mpforms_tablesdivs'];
 
 	return $options;
 }
@@ -230,43 +227,43 @@ function mpforms_add_tinymce_plugin($plugins) {
 
 function mp_forms_repair_post($data) {
 	// combine rawpost and $_POST ($data) to rebuild broken arrays in $_POST
-    $rawpost = "&".file_get_contents("php://input");
-    foreach ($data as $key => $value) {
-        $pos = preg_match_all("/&".$key."=([^&]*)/i",$rawpost, $regs, PREG_PATTERN_ORDER);
-        if((!is_array($value)) && ($pos > 1)) {
-            $qform[$key] = array();
-            for($i = 0; $i < $pos; $i++) {
-                $qform[$key][$i] = urldecode($regs[1][$i]);
-            }
-        } else {
-            $qform[$key] = $value;
-        }
-    }
-    return $qform;
+	$rawpost = "&".file_get_contents("php://input");
+	foreach ($data as $key => $value) {
+		$pos = preg_match_all("/&".$key."=([^&]*)/i",$rawpost, $regs, PREG_PATTERN_ORDER);
+		if((!is_array($value)) && ($pos > 1)) {
+			$qform[$key] = array();
+			for($i = 0; $i < $pos; $i++) {
+				$qform[$key][$i] = urldecode($regs[1][$i]);
+			}
+		} else {
+			$qform[$key] = $value;
+		}
+	}
+	return $qform;
 }
 
 function mpforms_get_post_url($formid) {
-    $siteUrl = get_option('siteurl');
-    $siteUrlParts = parse_url($siteUrl);
-    $posturl = $siteUrlParts['scheme'] . '://' . $siteUrlParts['host'];
+	$siteUrl = get_option('siteurl');
+	$siteUrlParts = parse_url($siteUrl);
+	$posturl = $siteUrlParts['scheme'] . '://' . $siteUrlParts['host'];
 
-    if (isset($siteUrlParts['port'])) {
-        $posturl .= ':' . $siteUrlParts['port'];
-    }
+	if (isset($siteUrlParts['port'])) {
+		$posturl .= ':' . $siteUrlParts['port'];
+	}
 
-    $posturl .= $_SERVER['REQUEST_URI'];
+	$posturl .= $_SERVER['REQUEST_URI'];
 
-    if (strpos($posturl, 'formid=' . $formid) === false) {
-        if (strpos($posturl, '?') === false) {
-            $posturl .= '?formid=' . $formid;
-        } else {
-            $posturl .= '&formid=' . $formid;
-        }
-    }
-    return $posturl;
+	if (strpos($posturl, 'formid=' . $formid) === false) {
+		if (strpos($posturl, '?') === false) {
+			$posturl .= '?formid=' . $formid;
+		} else {
+			$posturl .= '&formid=' . $formid;
+		}
+	}
+	return $posturl;
 }
-function mpforms_handle_headers()
-{
+
+function mpforms_handle_headers() {
 	global $mpforms_data;
 	if (isset($_POST['formEncId']) && isset($_GET['formid'])) {
 		$formid = $_GET['formid'];
@@ -296,7 +293,7 @@ function mpforms_handle_headers()
 
 /* SHORTCODE OPTIONS */
 function mpforms_shortcode($atts) {
-    global $mpforms_data;
+	global $mpforms_data;
 	extract( shortcode_atts( array(
 		'formid' => '',
 		'ssl' => 'false',
@@ -312,7 +309,7 @@ function mpforms_shortcode($atts) {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-validate', '//static.mailplus.nl/jq/jquery.validate.min.js', array('jquery'));
 		wp_enqueue_script('jquery-ui-datepicker');
-	
+
 		if (isset($mpforms_data[$formid])) {
 			$result = $mpforms_data[$formid];
 		} else {
@@ -329,8 +326,6 @@ function mpforms_shortcode($atts) {
 	} catch (Exception $e) {
 		$result .= "<pre> Error: " . $e->getMessage() . "</pre>";
 	}
-	
 
 	return $result;
-
 }
