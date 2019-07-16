@@ -56,24 +56,30 @@ class mailplus_forms_api
 		$token = new Zend_Oauth_Token_Access();
 		$httpClient = $token->getHttpClient($config);
 
-		$client = new Zend_Rest_Client($options['mpforms_api_url']);
-		$client->setHttpClient($httpClient);
-		return $client;
+		if ($options['mpforms_api_url']) {
+			$client = new Zend_Rest_Client($options['mpforms_api_url']);
+			$client->setHttpClient($httpClient);
+			return $client;
+		} else {
+			return null;
+		}
 	}
 
 
 	public function get_forms()
 	{
 		$client = $this->get_client();
-
-		$result = $client->get("/integrationservice/form/list");
-
 		$forms = null;
-		foreach ($result as $form) {
-			$forms[] = $form;
+
+		if ($client) {
+			$result = $client->get("/integrationservice/form/list");
+			foreach ($result as $form) {
+				$forms[] = $form;
+			}
+
+			usort($forms, "cmp_form");
 		}
 
-		usort($forms, "cmp_form");
 		return $forms;
 	}
 
